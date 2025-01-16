@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FaBars, FaTimes, FaWhatsapp, FaTelegram } from "react-icons/fa";
@@ -5,7 +7,7 @@ import { FaBars, FaTimes, FaWhatsapp, FaTelegram } from "react-icons/fa";
 const HeaderContainer = styled.header`
     background-color: #034a4b;
     color: white;
-    height: 70px; /* Altura do header */
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,22 +16,26 @@ const HeaderContainer = styled.header`
     left: 0;
     width: 100%;
     z-index: 1000;
+    padding: 0 20px;
 `;
 
 const Logo = styled.h1`
     font-size: 1.5rem;
     margin: 0;
-    padding: 0 20px;
 `;
 
-const MenuIcon = styled.div`
-    font-size: 2rem; /* Aumentei o tamanho do ícone */
+const MenuIcon = styled.button`
+    font-size: 2rem;
     cursor: pointer;
-    padding: 0 20px;
-    display: none;
+    background: none;
+    border: none;
+    color: white;
 
     @media (max-width: 768px) {
         display: block;
+    }
+    @media (min-width: 769px) {
+        display: none;
     }
 `;
 
@@ -41,8 +47,8 @@ const NavMenu = styled.nav`
         position: fixed;
         top: 0;
         left: 0;
-        height: 500px; /* Altura do menu */
-        width: 40%; /* O menu ocupa 40% da largura da tela */
+        height: 100%;
+        width: 250px;
         background-color: #034a4b;
         flex-direction: column;
         align-items: center;
@@ -57,8 +63,7 @@ const NavMenu = styled.nav`
 const NavItem = styled.a`
     color: white;
     text-decoration: none;
-    font-size: 1.2rem; /* Aumentei o tamanho do texto */
-    padding: 10px 0;
+    font-size: 1.2rem;
 
     &:hover {
         text-decoration: underline;
@@ -66,14 +71,14 @@ const NavItem = styled.a`
 
     @media (max-width: 768px) {
         font-size: 1.5rem;
-        padding: 15px 0;
+        margin: 10px 0;
     }
 `;
 
 const IconWrapper = styled.div`
     display: flex;
     align-items: center;
-    gap: 10px; /* Espaçamento entre o texto e o ícone */
+    gap: 10px;
 `;
 
 const Overlay = styled.div`
@@ -83,7 +88,7 @@ const Overlay = styled.div`
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+    background: rgba(0, 0, 0, 0.5);
     z-index: 998;
 `;
 
@@ -91,7 +96,7 @@ const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
+        setMenuOpen((prev) => !prev);
     };
 
     const closeMenu = () => {
@@ -102,7 +107,10 @@ const Header = () => {
         <>
             <HeaderContainer>
                 <Logo>Vaz Comércio Books</Logo>
-                <MenuIcon onClick={toggleMenu}>
+                <MenuIcon
+                    onClick={toggleMenu}
+                    aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+                >
                     {menuOpen ? <FaTimes /> : <FaBars />}
                 </MenuIcon>
                 <NavMenu open={menuOpen}>
