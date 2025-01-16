@@ -1,96 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import styled from "styled-components";
 import { FaBars, FaTimes, FaWhatsapp, FaTelegram } from "react-icons/fa";
-
-const HeaderContainer = styled.header`
-    background-color: #034a4b;
-    color: white;
-    height: 70px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 0 20px;
-`;
-
-const Logo = styled.h1`
-    font-size: 1.5rem;
-    margin: 0;
-`;
-
-const MenuIcon = styled.button`
-    font-size: 2rem;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: white;
-
-    @media (max-width: 768px) {
-        display: block;
-    }
-    @media (min-width: 769px) {
-        display: none;
-    }
-`;
-
-const NavMenu = styled.nav`
-    display: flex;
-    gap: 20px;
-
-    @media (max-width: 768px) {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 250px;
-        background-color: #034a4b;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        transform: ${({ open }) => (open ? "translateX(0)" : "translateX(-100%)")};
-        transition: transform 0.3s ease-in-out;
-        z-index: 999;
-    }
-`;
-
-const NavItem = styled.a`
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-
-    &:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-        font-size: 1.5rem;
-        margin: 10px 0;
-    }
-`;
-
-const IconWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-`;
-
-const Overlay = styled.div`
-    display: ${({ open }) => (open ? "block" : "none")};
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-`;
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -105,34 +16,33 @@ const Header = () => {
 
     return (
         <>
-            <HeaderContainer>
-                <Logo>Vaz Comércio Books</Logo>
-                <MenuIcon
+            <header className="bg-teal-800 text-white h-16 flex justify-between items-center fixed top-0 left-0 w-full z-50 px-5">
+                <h1 className="text-xl m-0">Vaz Comércio Books</h1>
+                <button
                     onClick={toggleMenu}
                     aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+                    className="text-2xl cursor-pointer bg-none border-none text-white md:hidden"
                 >
                     {menuOpen ? <FaTimes /> : <FaBars />}
-                </MenuIcon>
-                <NavMenu open={menuOpen}>
-                    <NavItem href="#sobre" onClick={closeMenu}>
+                </button>
+                <nav
+                    className={`flex gap-5 md:flex ${menuOpen ? "fixed top-0 left-0 h-full w-64 bg-teal-800 flex-col items-center justify-center p-5 transform translate-x-0 transition-transform duration-300 z-40" : "fixed top-0 left-0 h-full w-64 bg-teal-800 flex-col items-center justify-center p-5 transform -translate-x-full transition-transform duration-300 z-40 md:relative md:translate-x-0 md:flex-row md:gap-5 md:p-0 md:h-auto md:w-auto"}`}
+                >
+                    <a href="#sobre" onClick={closeMenu} className="text-white no-underline text-lg hover:underline md:text-base md:m-0">
                         Sobre
-                    </NavItem>
-                    <NavItem href="#livros" onClick={closeMenu}>
+                    </a>
+                    <a href="#livros" onClick={closeMenu} className="text-white no-underline text-lg hover:underline md:text-base md:m-0">
                         Livros
-                    </NavItem>
-                    <NavItem href="#whatsapp" onClick={closeMenu}>
-                        <IconWrapper>
-                            Whatsapp <FaWhatsapp size={24} />
-                        </IconWrapper>
-                    </NavItem>
-                    <NavItem href="#telegram" onClick={closeMenu}>
-                        <IconWrapper>
-                            Telegram <FaTelegram size={24} />
-                        </IconWrapper>
-                    </NavItem>
-                </NavMenu>
-            </HeaderContainer>
-            <Overlay open={menuOpen} onClick={closeMenu} />
+                    </a>
+                    <a href="#whatsapp" onClick={closeMenu} className="text-white no-underline text-lg hover:underline flex items-center gap-2 md:text-base md:m-0">
+                        <span>Whatsapp</span> <FaWhatsapp size={24} />
+                    </a>
+                    <a href="#telegram" onClick={closeMenu} className="text-white no-underline text-lg hover:underline flex items-center gap-2 md:text-base md:m-0">
+                        <span>Telegram</span> <FaTelegram size={24} />
+                    </a>
+                </nav>
+            </header>
+            {menuOpen && <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-30" onClick={closeMenu}></div>}
         </>
     );
 };

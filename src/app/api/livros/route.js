@@ -2,25 +2,31 @@ import { MongoClient, ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 const client = new MongoClient(process.env.MONGO_URI);
-const db = client.db("livraria");
-const collection = db.collection("livros");
+let db;
+let collection;
+
+async function connectToDatabase() {
+  if (!client.topology || !client.topology.isConnected()) {
+    await client.connect();
+    db = client.db("livraria");
+    collection = db.collection("livros");
+  }
+}
 
 export async function GET(req) {
   try {
-    await client.connect();
+    await connectToDatabase();
     const livros = await collection.find({}).toArray();
     return NextResponse.json(livros, { status: 200 });
   } catch (error) {
     console.error("Erro ao buscar livros:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await client.close();
   }
 }
 
 export async function POST(req) {
   try {
-    await client.connect();
+    await connectToDatabase();
     const livro = await req.json();
 
     if (!livro.titulo || !livro.autor || !livro.descricao || !livro.urlImagem) {
@@ -33,22 +39,19 @@ export async function POST(req) {
     const result = await collection.insertOne(livro);
 
     if (result.acknowledged) {
-      const insertedLivro = await collection.findOne({ _id: result.insertedId });
-      return NextResponse.json(insertedLivro, { status: 201 });
+      return NextResponse.json(result, { status: 201 });
     } else {
       throw new Error("Erro ao adicionar livro");
     }
   } catch (error) {
     console.error("Erro ao adicionar livro:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await client.close();
   }
 }
 
 export async function DELETE(req) {
   try {
-    await client.connect();
+    await connectToDatabase();
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
     if (!id) {
@@ -63,7 +66,5 @@ export async function DELETE(req) {
   } catch (error) {
     console.error("Erro ao deletar livro:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await client.close();
   }
 }
