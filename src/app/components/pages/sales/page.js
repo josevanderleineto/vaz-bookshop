@@ -1,3 +1,6 @@
+// filepath: /Users/zeliamascarenhas/Desktop/VANDERLEI/DEV/PRJETOS/vaz-bookshop/src/app/components/pages/sales/page.js
+"use client";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 

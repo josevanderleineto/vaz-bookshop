@@ -26,7 +26,7 @@ const Header = () => {
                     {menuOpen ? <FaTimes /> : <FaBars />}
                 </button>
                 <nav
-                    className={`flex gap-5 md:flex ${menuOpen ? "fixed top-0 left-0 h-full w-64 bg-teal-800 flex-col items-center justify-center p-5 transform translate-x-0 transition-transform duration-300 z-40" : "fixed top-0 left-0 h-full w-64 bg-teal-800 flex-col items-center justify-center p-5 transform -translate-x-full transition-transform duration-300 z-40 md:relative md:translate-x-0 md:flex-row md:gap-5 md:p-0 md:h-auto md:w-auto"}`}
+                    className={`flex gap-5 md:flex ${menuOpen ? "fixed top-0 left-0 h-full w-64 bg-teal-800 flex-col items-center justify-start pt-20 p-5 transform translate-x-0 transition-transform duration-300 z-40" : "fixed top-0 left-0 h-full w-64 bg-teal-800 flex-col items-center justify-start pt-20 p-5 transform -translate-x-full transition-transform duration-300 z-40 md:relative md:translate-x-0 md:flex-row md:gap-5 md:p-0 md:h-auto md:w-auto"}`}
                 >
                     <a href="#sobre" onClick={closeMenu} className="text-white no-underline text-lg hover:underline md:text-base md:m-0">
                         Sobre
